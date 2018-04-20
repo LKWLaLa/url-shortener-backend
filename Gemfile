@@ -4,4 +4,5 @@ source 'https://rubygems.org' do
   gem 'redis'
   gem 'pry'
   gem 'require_all'
+  gem 'shotgun'
 end
