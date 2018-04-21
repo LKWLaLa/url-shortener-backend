@@ -38,6 +38,16 @@ class Application < Sinatra::Base
     end
   end
 
+  get '/:short_url' do
+    if full_url = $redis.hget("short_keys", params[:short_url])
+      #must begin with http or https, otherwise it will look for route within this domain
+      redirect full_url
+    else
+      status 404
+      body "404 error: Apologies, we cannot seem to find that short link."
+    end
+  end
+
 
   options "*" do
     response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"   
