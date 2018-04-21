@@ -3,4 +3,4 @@ require 'bundler'
 
 Bundler.require
 
-require_all 'app'
+require_relative '../app/app.rb'
