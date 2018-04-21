@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler'
 
-Bundler.require
+ENV['SINATRA_ENV'] ||= "development"
+Bundler.require(:default, ENV['SINATRA_ENV'])
 
 require_relative '../app/app.rb'
