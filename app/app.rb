@@ -5,7 +5,7 @@ class Application < Sinatra::Base
 
   configure do
     enable :cross_origin
-    $redis = Redis.new
+    $redis = Redis.new(url: ENV["REDIS_URL"])
   end
 
   helpers do
