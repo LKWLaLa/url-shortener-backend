@@ -18,7 +18,15 @@ module ApplicationHelper
   end
 
   def update_frequency(short_url)
-    $redis.hincrby("frequency", short_url, 1)
+    freq = $redis.hincrby("frequency", short_url, 1)
+  end
+
+  def add_to_top_100(short_url)
+    $redis.sadd("top_100", short_url)
+  end
+
+  def valid_top_100?(short_url)
+    $redis.scard("top_100") < 100 || check_frequency(short_url) >= $redis.get("minimum_frequency")
   end
 
 
