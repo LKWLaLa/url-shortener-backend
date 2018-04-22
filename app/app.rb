@@ -30,6 +30,7 @@ class Application < Sinatra::Base
     if full_url = $redis.hget("short_keys", short_url)
       update_frequency(short_url)
       add_to_top_100(short_url) if valid_top_100?(short_url)
+      prune_top_100
       #must begin with http or https, otherwise it will look for route within this domain
       redirect full_url
     else
