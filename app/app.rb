@@ -26,7 +26,9 @@ class Application < Sinatra::Base
   end
 
   get '/:short_url' do
-    if full_url = $redis.hget("short_keys", params[:short_url])
+    short_url = params[:short_url]
+    if full_url = $redis.hget("short_keys", short_url)
+      update_frequency(short_url)
       #must begin with http or https, otherwise it will look for route within this domain
       redirect full_url
     else
