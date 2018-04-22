@@ -31,9 +31,22 @@ module ApplicationHelper
     $redis.zcard("top_100") < 100 || frequency(short_url) >= $redis.get("minimum_frequency")
   end
 
+  def get_top_100
+    $redis.zrevrangebyscore("top_100", "+inf", "-inf", :with_scores => true)
+  end
+
+  def parse_top_100    
+    get_top_100.map do |ar|
+      short_url = ar[0]
+      frequency = ar[1]
+      full_url = $redis.hget("short_keys", short_url)
+      {short_url => {"frequency": frequency, "full_url": full_url}}
+    end
+  end
+
   def prune_top_100
     if $redis.zcard("top_100") > 100
-      sorted_members = $redis.zrevrangebyscore("top_100", "+inf", "-inf", :with_scores => true)
+      sorted_members = get_top_100
       #Because we prune every time, we will only ever need to remove one member
       lowest_score_member = sorted_members[-1][0]
       $redis.zrem("top_100", lowest_score_member)

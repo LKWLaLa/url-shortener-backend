@@ -25,6 +25,10 @@ class Application < Sinatra::Base
     end
   end
 
+  get '/top-100' do
+    parse_top_100.to_json
+  end
+
   get '/:short_url' do
     short_url = params[:short_url]
     if full_url = $redis.hget("short_keys", short_url)
