@@ -40,7 +40,7 @@ module ApplicationHelper
       short_url = ar[0]
       frequency = ar[1]
       full_url = $redis.hget("short_keys", short_url)
-      {short_url => {"frequency": frequency, "full_url": full_url}}
+      {"short_url": short_url, "frequency": frequency, "full_url": full_url}}
     end
   end
 
