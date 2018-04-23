@@ -8,6 +8,18 @@ class Application < Sinatra::Base
     enable :cross_origin
     $redis = Redis.new(url: ENV["REDIS_URL"])
   end
+
+  get '/' do
+    "Welcome to Shrink Me!  (Lindsey's URL shortener) 
+    There is nothing to see at the index route!  You can try navigating to '/top-100',
+    or making a POST request to '/urls', with a body/payload format of {url: 'https://example.com'}."
+  end
+
+  # The Redis store includes two hash tables:  The first exists at the key
+  # "short_keys", and contains keys which are the shortened version of a URL,
+  # with values that are the full URL.  The second hash table, at "long_keys",
+  # is the opposite.  The keys are the full version of the URL and the values
+  # are the shortened versions. 
   
   post '/urls' do
     request.body.rewind
