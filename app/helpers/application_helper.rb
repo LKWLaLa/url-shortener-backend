@@ -9,10 +9,9 @@ module ApplicationHelper
   # "top_100" - sorted set, where member = short_url and score = frequency (number of hits)
   # "minimum_frequency" - a simple key, value pair that holds a counter of the lowest
   # score / frequency value in the "top_100" sorted set.  
-  # "url_iteration" - list of integers representing the latest iteration of a short_url
+  # "url_iteration" - list of integers (in string form) representing the latest iteration of a short_url
 
-
-
+  
   def increment(arr, index = 0)
     if index == arr.length
       arr << 0
@@ -41,7 +40,11 @@ module ApplicationHelper
   end
 
   def frequency(short_url)
-    $redis.hget("frequency", short_url)
+    $redis.hget("frequency", short_url).to_i
+  end
+
+  def minimum_frequency
+    $redis.get("minimum_frequency").to_i
   end
 
   def update_frequency(short_url)
@@ -55,7 +58,7 @@ module ApplicationHelper
   end
 
   def valid_top_100?(short_url)
-    $redis.zcard("top_100") < 100 || frequency(short_url) >= $redis.get("minimum_frequency")
+    $redis.zcard("top_100") < 100 || frequency(short_url) >= minimum_frequency
   end
 
   def get_top_100
