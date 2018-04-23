@@ -7,11 +7,29 @@ module ApplicationHelper
   # "long_keys" - hash with the structure {full_url : short_url}
   # "frequency" - hash with the structure {short_url : number of hits}
   # "top_100" - sorted set, where member = short_url and score = frequency (number of hits)
-  # "minimum_frequency" - simple key, value pair that holds a counter of the lowest
-  #    score / frequency value in the "top_100" sorted set.  
+  # "minimum_frequency" - a simple key, value pair that holds a counter of the lowest
+  # score / frequency value in the "top_100" sorted set.  
+  # "url_iteration" - list of integers representing the latest iteration of a short_url
 
 
-  def generate_short_url
+
+  def increment(arr, index = 0)
+    if index == arr.length
+      arr << 0
+    elsif arr[index] < 62
+      arr[index] += 1
+      arr
+    else #(arr[index] == 62)
+      arr[index] = 0
+      arr = increment(arr, index + 1)
+    end
+  end
+
+  # my_array = [0]
+  # 300.times {print my_array = increment(my_array)}
+
+
+  def generate_short_url(arr)
     chars_arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
       'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
       'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
