@@ -1,6 +1,15 @@
 require './config/environment'
 
 module ApplicationHelper 
+  
+  # Definition of redis data structures included:
+  # "short_keys" - hash with the structure {short_url : full_url}
+  # "long_keys" - hash with the structure {full_url : short_url}
+  # "frequency" - hash with the structure {short_url : number of hits}
+  # "top_100" - sorted set, where member = short_url and score = frequency (number of hits)
+  # "minimum_frequency" - simple key, value pair that holds a counter of the lowest
+  #    score / frequency value in the "top_100" sorted set.  
+
 
   def generate_short_url
     chars_arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
