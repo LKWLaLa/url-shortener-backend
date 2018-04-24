@@ -15,10 +15,10 @@ module ApplicationHelper
   def increment(arr, index = 0)
     if index == arr.length
       arr << 0
-    elsif arr[index] < 62
+    elsif arr[index] < 61
       arr[index] += 1
       arr
-    else #(arr[index] == 62)
+    else #(arr[index] == 61)
       arr[index] = 0
       arr = increment(arr, index + 1)
     end
@@ -28,15 +28,19 @@ module ApplicationHelper
   # 300.times {print my_array = increment(my_array)}
 
 
-  def generate_short_url(arr)
+  def map_ints_to_chars(int_arr)
     chars_arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
       'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
       'C','D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
       'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0','1', '2', '3', '4', '5',
       '6', '7', '8', '9']
 
-      short_url = 7.times.map{ chars_arr.sample }.join
-      $redis.hexists("short_keys", short_url) ? generate_short_url : short_url
+    int_arr.map {|i| chars_arr[i] }.join
+  end
+  
+
+  def generate_short_url
+      
   end
 
   def frequency(short_url)
