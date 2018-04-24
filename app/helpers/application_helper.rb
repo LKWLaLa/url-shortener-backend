@@ -9,7 +9,8 @@ module ApplicationHelper
   # "top_100" - sorted set, where member = short_url and score = frequency (number of hits)
   # "minimum_frequency" - a simple key, value pair that holds a counter of the lowest
   # score / frequency value in the "top_100" sorted set.  
-  # "url_iteration" - list of integers (in string form) representing the latest iteration of a short_url
+  # "url_iteration" - list of integers (in string form) representing the latest iteration of a short_url,
+  # the starting point being {"url_iteration" : [0]}
 
   def generate_short_url
     # is there a better way to store this data?
