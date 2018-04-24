@@ -11,6 +11,14 @@ module ApplicationHelper
   # score / frequency value in the "top_100" sorted set.  
   # "url_iteration" - list of integers (in string form) representing the latest iteration of a short_url
 
+  def generate_short_url
+    # is there a better way to store this data?
+    arr = map_url_iteration_from_redis_to_int_array
+    new_arr = increment(arr) 
+    $redis.del("url_iteration")
+    $redis.lpush("url_iteration", new_arr)
+    map_ints_to_chars(new_arr)
+  end
   
   def increment(arr, index = 0)
     if index == arr.length
@@ -24,10 +32,6 @@ module ApplicationHelper
     end
   end
 
-  # my_array = [0]
-  # 300.times {print my_array = increment(my_array)}
-
-
   def map_ints_to_chars(int_arr)
     chars_arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
       'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
@@ -37,10 +41,9 @@ module ApplicationHelper
 
     int_arr.map {|i| chars_arr[i] }.join
   end
-  
 
-  def generate_short_url
-      
+  def map_url_iteration_from_redis_to_int_array
+    $redis.lrange("url_iteration", 0, -1).map{|s| s.to_i }
   end
 
   def frequency(short_url)
