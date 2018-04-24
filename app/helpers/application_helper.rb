@@ -14,10 +14,11 @@ module ApplicationHelper
   def generate_short_url
     # is there a better way to store this data?
     arr = map_url_iteration_from_redis_to_int_array
+    short_url = map_ints_to_chars(arr)
     new_arr = increment(arr) 
     $redis.del("url_iteration")
-    $redis.lpush("url_iteration", new_arr)
-    map_ints_to_chars(new_arr)
+    $redis.rpush("url_iteration", new_arr)
+    short_url
   end
   
   def increment(arr, index = 0)
